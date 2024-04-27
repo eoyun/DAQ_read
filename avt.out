@@ -1,0 +1,228 @@
+nohup: ignoring input
+
+Processing avg.cc(5702,11,1)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5702/Run_5702_Wave/Run_5702_Wave_MID_11/Run_5702_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5703,11,2)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5703/Run_5703_Wave/Run_5703_Wave_MID_11/Run_5703_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5704,11,3)...
+
+ *** Break *** segmentation violation
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5704/Run_5704_Wave/Run_5704_Wave_MID_11/Run_5704_Wave_MID_11_FILE_0.dat
+
+
+===========================================================
+There was a crash.
+This is the entire stack trace of all threads:
+===========================================================
+#0  0x00007f8da1ec360c in waitpid () from /lib64/libc.so.6
+#1  0x00007f8da1e40f62 in do_system () from /lib64/libc.so.6
+#2  0x00007f8da2bf6a1c in TUnixSystem::StackTrace() () from /cvmfs/sft.cern.ch/lcg/releases/ROOT/6.28.06-0b358/x86_64-centos7-gcc11-opt/bin/../lib/libCore.so
+#3  0x00007f8da2bf4135 in TUnixSystem::DispatchSignals(ESignals) () from /cvmfs/sft.cern.ch/lcg/releases/ROOT/6.28.06-0b358/x86_64-centos7-gcc11-opt/bin/../lib/libCore.so
+#4  <signal handler called>
+#5  0x00007f8da1e7559c in fseek () from /lib64/libc.so.6
+#6  0x00007f8da3156188 in ?? ()
+#7  0x00007fffc035ec30 in ?? ()
+#8  0x00007fffc035ec30 in ?? ()
+#9  0x0000000000000000 in ?? ()
+===========================================================
+
+
+The lines below might hint at the cause of the crash. If you see question
+marks as part of the stack trace, try to recompile with debugging information
+enabled and export CLING_DEBUG=1 environment variable before running.
+You may get help by asking at the ROOT forum https://root.cern/forum
+Only if you are really convinced it is a bug in ROOT then please submit a
+report at https://root.cern/bugs Please post the ENTIRE stack trace
+from above as an attachment in addition to anything else
+that might help us fixing this issue.
+===========================================================
+#5  0x00007f8da1e7559c in fseek () from /lib64/libc.so.6
+#6  0x00007f8da3156188 in ?? ()
+#7  0x00007fffc035ec30 in ?? ()
+#8  0x00007fffc035ec30 in ?? ()
+#9  0x0000000000000000 in ?? ()
+===========================================================
+
+
+
+Processing avg.cc(5705,11,4)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5705/Run_5705_Wave/Run_5705_Wave_MID_11/Run_5705_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5706,11,5)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5706/Run_5706_Wave/Run_5706_Wave_MID_11/Run_5706_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5707,11,6)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5707/Run_5707_Wave/Run_5707_Wave_MID_11/Run_5707_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5708,11,7)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5708/Run_5708_Wave/Run_5708_Wave_MID_11/Run_5708_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5709,11,8)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5709/Run_5709_Wave/Run_5709_Wave_MID_11/Run_5709_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5710,11,9)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5710/Run_5710_Wave/Run_5710_Wave_MID_11/Run_5710_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5711,11,10)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5711/Run_5711_Wave/Run_5711_Wave_MID_11/Run_5711_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5712,11,11)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5712/Run_5712_Wave/Run_5712_Wave_MID_11/Run_5712_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5713,11,12)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5713/Run_5713_Wave/Run_5713_Wave_MID_11/Run_5713_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5716,11,13)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5716/Run_5716_Wave/Run_5716_Wave_MID_11/Run_5716_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5717,11,14)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5717/Run_5717_Wave/Run_5717_Wave_MID_11/Run_5717_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5718,11,15)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5718/Run_5718_Wave/Run_5718_Wave_MID_11/Run_5718_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5719,11,16)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5719/Run_5719_Wave/Run_5719_Wave_MID_11/Run_5719_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5720,11,17)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5720/Run_5720_Wave/Run_5720_Wave_MID_11/Run_5720_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5721,11,18)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5721/Run_5721_Wave/Run_5721_Wave_MID_11/Run_5721_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5722,11,19)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5722/Run_5722_Wave/Run_5722_Wave_MID_11/Run_5722_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5723,11,20)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5723/Run_5723_Wave/Run_5723_Wave_MID_11/Run_5723_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5724,11,21)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5724/Run_5724_Wave/Run_5724_Wave_MID_11/Run_5724_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5725,11,22)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5725/Run_5725_Wave/Run_5725_Wave_MID_11/Run_5725_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5726,11,23)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5726/Run_5726_Wave/Run_5726_Wave_MID_11/Run_5726_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5727,11,24)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5727/Run_5727_Wave/Run_5727_Wave_MID_11/Run_5727_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5728,11,25)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5728/Run_5728_Wave/Run_5728_Wave_MID_11/Run_5728_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5729,11,26)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5729/Run_5729_Wave/Run_5729_Wave_MID_11/Run_5729_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5730,11,27)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5730/Run_5730_Wave/Run_5730_Wave_MID_11/Run_5730_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5731,11,28)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5731/Run_5731_Wave/Run_5731_Wave_MID_11/Run_5731_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5732,11,29)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5732/Run_5732_Wave/Run_5732_Wave_MID_11/Run_5732_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5733,11,30)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5733/Run_5733_Wave/Run_5733_Wave_MID_11/Run_5733_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5734,11,31)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5734/Run_5734_Wave/Run_5734_Wave_MID_11/Run_5734_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5735,11,32)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5735/Run_5735_Wave/Run_5735_Wave_MID_11/Run_5735_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5736,11,1)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5736/Run_5736_Wave/Run_5736_Wave_MID_11/Run_5736_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5737,11,2)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5737/Run_5737_Wave/Run_5737_Wave_MID_11/Run_5737_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5738,11,3)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5738/Run_5738_Wave/Run_5738_Wave_MID_11/Run_5738_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5739,11,4)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5739/Run_5739_Wave/Run_5739_Wave_MID_11/Run_5739_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5740,11,5)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5740/Run_5740_Wave/Run_5740_Wave_MID_11/Run_5740_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5741,11,6)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5741/Run_5741_Wave/Run_5741_Wave_MID_11/Run_5741_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5742,11,7)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5742/Run_5742_Wave/Run_5742_Wave_MID_11/Run_5742_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5743,11,8)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5743/Run_5743_Wave/Run_5743_Wave_MID_11/Run_5743_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5744,11,9)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5744/Run_5744_Wave/Run_5744_Wave_MID_11/Run_5744_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5745,11,10)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5745/Run_5745_Wave/Run_5745_Wave_MID_11/Run_5745_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5746,11,11)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5746/Run_5746_Wave/Run_5746_Wave_MID_11/Run_5746_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5747,11,12)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5747/Run_5747_Wave/Run_5747_Wave_MID_11/Run_5747_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5748,11,13)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5748/Run_5748_Wave/Run_5748_Wave_MID_11/Run_5748_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5749,11,14)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5749/Run_5749_Wave/Run_5749_Wave_MID_11/Run_5749_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5750,11,15)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5750/Run_5750_Wave/Run_5750_Wave_MID_11/Run_5750_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5751,11,16)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5751/Run_5751_Wave/Run_5751_Wave_MID_11/Run_5751_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5753,11,17)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5753/Run_5753_Wave/Run_5753_Wave_MID_11/Run_5753_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5754,11,18)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5754/Run_5754_Wave/Run_5754_Wave_MID_11/Run_5754_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5755,11,19)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5755/Run_5755_Wave/Run_5755_Wave_MID_11/Run_5755_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5756,11,20)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5756/Run_5756_Wave/Run_5756_Wave_MID_11/Run_5756_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5759,11,22)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5759/Run_5759_Wave/Run_5759_Wave_MID_11/Run_5759_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5760,11,23)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5760/Run_5760_Wave/Run_5760_Wave_MID_11/Run_5760_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5761,11,24)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5761/Run_5761_Wave/Run_5761_Wave_MID_11/Run_5761_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5762,11,25)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5762/Run_5762_Wave/Run_5762_Wave_MID_11/Run_5762_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5763,11,26)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5763/Run_5763_Wave/Run_5763_Wave_MID_11/Run_5763_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5764,11,27)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5764/Run_5764_Wave/Run_5764_Wave_MID_11/Run_5764_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5765,11,28)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5765/Run_5765_Wave/Run_5765_Wave_MID_11/Run_5765_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5766,11,29)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5766/Run_5766_Wave/Run_5766_Wave_MID_11/Run_5766_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5767,11,30)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5767/Run_5767_Wave/Run_5767_Wave_MID_11/Run_5767_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5768,11,31)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5768/Run_5768_Wave/Run_5768_Wave_MID_11/Run_5768_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
+
+Processing avg.cc(5769,11,32)...
+/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_5769/Run_5769_Wave/Run_5769_Wave_MID_11/Run_5769_Wave_MID_11_FILE_0.dat-----------------------------------------------------------------------
