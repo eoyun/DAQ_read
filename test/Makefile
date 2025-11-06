@@ -1,6 +1,6 @@
 # 컴파일러 및 플래그 설정
 CXX = g++
-CXXFLAGS = -I../include $(shell root-config --cflags) -Wall -std=c++17
+CXXFLAGS = -I../include $(shell root-config --cflags) -Wall -std=c++20
 
 # 라이브러리 경로 및 라이브러리 파일 설정
 LIB_DIR = ../lib

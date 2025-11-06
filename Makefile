@@ -5,7 +5,7 @@ LIB_DIR := lib
 
 # Compiler and flags
 CXX := g++
-CXXFLAGS := -std=c++17 -Wall -Wextra -I$(INC_DIR) -fPIC
+CXXFLAGS := -std=c++20 -Wall -Wextra -I$(INC_DIR) -fPIC
 LDFLAGS := -shared
 
 # Target library

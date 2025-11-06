@@ -36,8 +36,8 @@ void waveform_DRC (const int runnum, const int Mid, const int channel){
 	TCanvas *c1 = new TCanvas("c1", "CAL DAQ", 800, 500);
 	TH1F *plot = new TH1F("plot", "Waveform", 1023, 0, 1023); 
 	plot->SetStats(0);
-	//sprintf(filename,"/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_%d/Run_%d_Wave/Run_%d_Wave_MID_%d/Run_%d_Wave_MID_%d_FILE_0.dat",runnum,runnum,runnum,Mid,runnum,Mid);
-	sprintf(filename,"/pnfs/knu.ac.kr/data/cms/store/user/sungwon/2024_DRC_TB_Data/Run_%d/Run_%d_Wave/Run_%d_Wave_MID_%d/Run_%d_Wave_MID_%d_FILE_0.dat",runnum,runnum,runnum,Mid,runnum,Mid);
+	sprintf(filename,"/pnfs/knu.ac.kr/data/cms/store/user/yeo/HDD/Run_%d/Run_%d_Wave/Run_%d_Wave_MID_%d/Run_%d_Wave_MID_%d_FILE_0.dat",runnum,runnum,runnum,Mid,runnum,Mid);
+	//sprintf(filename,"/pnfs/knu.ac.kr/data/cms/store/user/sungwon/2024_DRC_TB_Data/Run_%d/Run_%d_Wave/Run_%d_Wave_MID_%d/Run_%d_Wave_MID_%d_FILE_0.dat",runnum,runnum,runnum,Mid,runnum,Mid);
 	printf("%s",filename);
 	fp = fopen(filename, "rb");
 	fseek(fp, 0L, SEEK_END);

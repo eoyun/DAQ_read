@@ -1,3 +1,6 @@
 *.o
 *_program
 *.root
+*.png
+*.eps
+*.txt
