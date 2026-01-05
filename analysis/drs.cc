@@ -1,4 +1,5 @@
 #include <iostream>
+#include <filesystem>
 #include <vector>
 #include "readData.h"
 #include "TTree.h"
@@ -16,6 +17,7 @@
 #include <fstream>
 #include <iomanip>
 
+namespace fs = std::filesystem;
 
 struct BinStats {
     double sum   = 0.0;
@@ -41,6 +43,29 @@ int main(int argc, char* argv[]){
 	std::vector<int> delta_v;
 	std::vector<double> delta_t_rise;
 	std::vector<double> delta_t_fall;
+	
+	fs::path dir = "./roots";
+	fs::path time_dir = "../time_calib";
+	if (!fs::exists(dir)) {
+        	if (fs::create_directories(dir)) {
+            		std::cout << "Directory created: " << dir << std::endl;
+        	} else {
+            		std::cerr << "Failed to create directory: " << dir << std::endl;
+        	}
+   	} else {
+        	std::cout << "Directory already exists: " << dir << std::endl;
+    	}
+
+	if (!fs::exists(time_dir)) {
+        	if (fs::create_directories(time_dir)) {
+            		std::cout << "Directory created: " << time_dir << std::endl;
+        	} else {
+            		std::cerr << "Failed to create directory: " << time_dir << std::endl;
+        	}
+   	} else {
+        	std::cout << "Directory already exists: " << time_dir << std::endl;
+    	}
+
 	TFile *f = new TFile(Form("./roots/drs_time_%d.root",runnum),"recreate");
 	TTree *t = new TTree("delta_v","");
 	t->Branch("bin_array",&bin_array);
@@ -174,7 +199,7 @@ int main(int argc, char* argv[]){
 	              << "  mean = " << mean
 	              << "  (N = " << s.count << ")\n";
 	}
-	std::string filename_out = "/u/user/eoyun/DAQ/25.03.27/DAQ_read/time_calib/MID_"+std::to_string(mid)+"_ch_"+std::to_string(ch)+".txt";
+	std::string filename_out = "../time_calib/MID_"+std::to_string(mid)+"_ch_"+std::to_string(ch)+".txt";
 	std::ofstream fout(filename_out);
         if (!fout.is_open()) {
             std::cerr << "cannot open output file\n";

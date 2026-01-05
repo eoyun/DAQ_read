@@ -35,7 +35,7 @@ int main(int argc, char* argv[]){
 
 	FILE* fp;
 	char file_name[200];
-	sprintf(file_name,"/u/user/eoyun/DAQ/25.03.27/DAQ_read/time_calib/MID_%d_ch_%d.txt",mid,ch);
+	sprintf(file_name,"../time_calib/MID_%d_ch_%d.txt",mid,ch);
 	fp = fopen(file_name,"rt");
 	double val;
 	std::vector<double> TC_value;
@@ -185,8 +185,8 @@ int main(int argc, char* argv[]){
 		
 
 	}
-	//sprintf(file_name,"/u/user/eoyun/DAQ/25.03.27/DAQ_read/time_calib/global_MID_%d_ch_%d_loop_%d.txt",mid,ch,loops);
-	sprintf(file_name,"/u/user/eoyun/DAQ/25.03.27/DAQ_read/time_calib/global_MID_%d_ch_%d.txt",mid,ch);
+	//sprintf(file_name,"../time_calib/global_MID_%d_ch_%d_loop_%d.txt",mid,ch,loops);
+	sprintf(file_name,"../time_calib/global_MID_%d_ch_%d.txt",mid,ch);
 	fp = fopen(file_name,"wt");
 
 	for (int i=0;i<(int)time_calib_new.size();i++){
