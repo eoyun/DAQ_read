@@ -7,20 +7,25 @@ structure
 ## How to set
 in KNU server, set the environment and compile library code 
 
-`source env.sh \
+`source env.sh 
+
 make install`
 
 ## How to use
 in argument in makefile, type only code name without .cc
 
-`cd analysis \
-make ARG=<code name> \
+`cd analysis 
+
+make ARG=<code name> 
+
 ./<code name> <arg1> <arg2> ...`
 
 ## for example
 drs.cc -> local calibration
 
-`make ARG=drs \
-./drs 12763 9 2 \
+`make ARG=drs 
+
+./drs 12763 9 2 
+
 #./drs <runnum> <mid> <ch>`
 
