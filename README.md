@@ -7,9 +7,9 @@ structure
 ## How to set
 in KNU server, set the environment and compile library code 
 
-`source env.sh 
-
-make install`
+```bash
+source env.sh 
+make install```
 
 ## How to use
 in argument in makefile, type only code name without .cc
