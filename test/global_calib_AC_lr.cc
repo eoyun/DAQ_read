@@ -16,7 +16,12 @@ int main(int argc, char* argv[]){
 	int runnum = atoi(argv[1]);
 	int mid = atoi(argv[2]);
 	int ch = atoi(argv[3]);
-	//int loops = atoi(argv[4]);
+	double beta = 1.;
+	bool use_custom_beta = false;
+	if (argc > 4){
+		beta = atof(argv[4]);
+		use_custom_beta = true;
+	}
 
 	int drs_num = (ch - 1) / 8;
 	readData *waveData = new readData(runnum,mid);
@@ -35,8 +40,11 @@ int main(int argc, char* argv[]){
 	double std_best = std::numeric_limits<double>::max();
 
 	FILE* fp;
-	char file_name[200];
+	char file_name[400];
 	sprintf(file_name,"/u/user/eoyun/DAQ/25.03.27/DAQ_read/time_calib/AC_MID_%d_ch_%d.txt",mid,ch);
+	if (argc > 6){
+		sprintf(file_name,"%s",argv[6]);
+	}
 	fp = fopen(file_name,"rt");
 	double val;
 	std::vector<double> TC_value;
@@ -52,7 +60,6 @@ int main(int argc, char* argv[]){
 	//for (int i = 0;i<10000;i++){
 	//for (int i = 0;i<nevt;i++){
 	//TCanvas *c = new TCanvas();
-	double beta = 1.;
 	for (int i = 0;i<nevt;i++){
 		waveData->getEvt();
 		waveform = waveData->readEvt(ch);
@@ -149,7 +156,7 @@ int main(int argc, char* argv[]){
 			}
 			double correction_start_bin = 10000./(delta_t_kq + time_cor_start_bin);
 			//std::cout<<zerocross.at(j)<<" || "<<correction<<" || "<<delta_t_kq<<" || "<<time_cor<<" || "<<std::accumulate(time_calib_old.begin(),time_calib_old.begin() + finish_bin,0.0 )<<" || "<<std::accumulate(time_calib_old.end() - start_bin,time_calib_old.end(),0.0)<<std::endl;
-			if (i > 1000) beta = 0.001;
+			if (!use_custom_beta && i > 1000) beta = 0.001;
 			time_calib_new.at(start_bin) = correction_start_bin * time_calib_new.at(start_bin) * beta + time_calib_new.at(start_bin) * (1 - beta);
 			//time_calib_new.at(start_bin) = correction_start_bin * time_calib_new.at(start_bin);
 			if (start_bin < finish_bin) for (int k = start_bin+1 ;k<finish_bin ;k++) time_calib_new.at(k) = correction * time_calib_new.at(k) * beta + time_calib_new.at(k) * (1 - beta);
@@ -195,6 +202,9 @@ int main(int argc, char* argv[]){
 
 	}
 	sprintf(file_name,"/u/user/eoyun/DAQ/25.03.27/DAQ_read/time_calib/global_AC_MID_%d_ch_%d.txt",mid,ch);
+	if (argc > 5){
+		sprintf(file_name,"%s",argv[5]);
+	}
 	//sprintf(file_name,"/u/user/eoyun/DAQ/25.03.27/DAQ_read/time_calib/global_MID_%d_ch_%d.txt",mid,ch);
 	fp = fopen(file_name,"wt");
 

@@ -10,6 +10,7 @@
 #include "TFitResultPtr.h"
 #include "TCanvas.h"
 #include <map>
+#include <string>
 
 int main(int argc, char* argv[]){
 	int runnum = atoi(argv[1]);
@@ -18,6 +19,16 @@ int main(int argc, char* argv[]){
 	int ch2 = atoi(argv[4]);
 	int ch1_ref = atoi(argv[5]);
 	int ch2_ref = atoi(argv[6]);
+	std::string tc_file_ch1 = "";
+	std::string tc_file_ch2 = "";
+	std::string tc_file_ch1_ref = "";
+	std::string tc_file_ch2_ref = "";
+	std::string output_root = Form("./roots/260414/time_calib_runnum_%d_mid_%d.root",runnum,mid);
+	if (argc > 7) tc_file_ch1 = argv[7];
+	if (argc > 8) tc_file_ch2 = argv[8];
+	if (argc > 9) tc_file_ch1_ref = argv[9];
+	if (argc > 10) tc_file_ch2_ref = argv[10];
+	if (argc > 11) output_root = argv[11];
 
 	int drs_num1 = (ch1 - 1) / 8;
 	int drs_num2 = (ch2 - 1) / 8;
@@ -44,7 +55,7 @@ int main(int argc, char* argv[]){
 	std::vector<double> ADC_value1_ref;
 	std::vector<double> ADC_value2_ref;
 
-	TFile* f = new TFile(Form("./roots/260414/time_calib_runnum_%d_mid_%d.root",runnum,mid),"recreate");
+	TFile* f = new TFile(output_root.c_str(),"recreate");
 	TTree *t = new TTree("tree","");
 
 	double time_diff;
@@ -76,10 +87,14 @@ int main(int argc, char* argv[]){
 		pedcor_wave1_ref = pedcorwave_ADC_calib(waveform1_ref,100,drs_stop.at(drs_num1),ADC_value1);
 		pedcor_wave2_ref = pedcorwave_ADC_calib(waveform2_ref,100,drs_stop.at(drs_num2),ADC_value2_ref);
 
-		TC_wave1 = TCwave(pedcor_wave1,mid,ch1,drs_stop.at(drs_num1));
-		TC_wave2 = TCwave(pedcor_wave2,mid,ch2,drs_stop.at(drs_num2));
-		TC_wave1_ref = TCwave(pedcor_wave1_ref,mid,ch1_ref,drs_stop.at(drs_num1));
-		TC_wave2_ref = TCwave(pedcor_wave2_ref,mid,ch2_ref,drs_stop.at(drs_num2));
+		if (tc_file_ch1.empty()) TC_wave1 = TCwave(pedcor_wave1,mid,ch1,drs_stop.at(drs_num1));
+		else TC_wave1 = TCwave(pedcor_wave1,drs_stop.at(drs_num1),tc_file_ch1);
+		if (tc_file_ch2.empty()) TC_wave2 = TCwave(pedcor_wave2,mid,ch2,drs_stop.at(drs_num2));
+		else TC_wave2 = TCwave(pedcor_wave2,drs_stop.at(drs_num2),tc_file_ch2);
+		if (tc_file_ch1_ref.empty()) TC_wave1_ref = TCwave(pedcor_wave1_ref,mid,ch1_ref,drs_stop.at(drs_num1));
+		else TC_wave1_ref = TCwave(pedcor_wave1_ref,drs_stop.at(drs_num1),tc_file_ch1_ref);
+		if (tc_file_ch2_ref.empty()) TC_wave2_ref = TCwave(pedcor_wave2_ref,mid,ch2_ref,drs_stop.at(drs_num2));
+		else TC_wave2_ref = TCwave(pedcor_wave2_ref,drs_stop.at(drs_num2),tc_file_ch2_ref);
 		double time_woTC1 = getTime(pedcor_wave1,0.4);
 		double time_woTC2 = getTime(pedcor_wave2,0.4);
 		double time1 = getTimewTC(TC_wave1,0.4);	
