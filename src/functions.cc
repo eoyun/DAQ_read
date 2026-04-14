@@ -8,6 +8,24 @@
 #include <map>
 #include <iterator>
 #include <cstdio>
+#include <string>
+
+namespace {
+std::vector<double> load_tc_values(const std::string &file_name){
+	FILE* fp = fopen(file_name.c_str(),"rt");
+	if (fp == nullptr){
+		std::cerr << "Failed to open time calibration file: " << file_name << std::endl;
+		return {};
+	}
+	double val;
+	std::vector<double> tc_values;
+	while (fscanf(fp,"%lf",&val)==1){
+		tc_values.push_back(val);
+	}
+	fclose(fp);
+	return tc_values;
+}
+}
 
 double getStd (std::vector<double> &data){
     	if (data.empty()) return 0.0; // 비어있을 경우 0 반환
@@ -182,16 +200,15 @@ std::map<int,int> FindCross (std::vector<double> waveform, int cut_up, int cut_d
 	return crossbin;
 }
 std::map<double,double> TCwave_saw (std::vector<double> waveform,int MID, int channel, int drs_stop){
-	FILE* fp;
 	char file_name[200];
 	sprintf(file_name,"/u/user/eoyun/DAQ/25.03.27/DAQ_read/time_calib/MID_%d_ch_%d_saw.txt",MID,channel);
-	fp = fopen(file_name,"rt");
-	double val;
-	std::vector<double> TC_value;
+	return TCwave_saw(waveform, drs_stop, std::string(file_name));
+}
+
+std::map<double,double> TCwave_saw (std::vector<double> waveform, int drs_stop, const std::string &calib_file){
+	std::vector<double> TC_value = load_tc_values(calib_file);
 	std::map<double,double> time_calib_waveform;
-	while (fscanf(fp,"%lf",&val)==1){
-		TC_value.push_back(val);
-	}
+	if (TC_value.empty()) return time_calib_waveform;
 	double time_sum=0.0;
 	for (int i=0;i<(int)waveform.size();i++){
 		int bin;
@@ -201,23 +218,21 @@ std::map<double,double> TCwave_saw (std::vector<double> waveform,int MID, int ch
 		time_sum += TC_value.at(bin) / 1000.;
 
 	}
-	fclose(fp);	
 	return time_calib_waveform;
 
 
 
 }
 std::map<double,double> TCwave (std::vector<double> waveform,int MID, int channel, int drs_stop){
-	FILE* fp;
 	char file_name[200];
 	sprintf(file_name,"/u/user/eoyun/DAQ/25.03.27/DAQ_read/time_calib/global_AC_MID_%d_ch_%d.txt",MID,channel);
-	fp = fopen(file_name,"rt");
-	double val;
-	std::vector<double> TC_value;
+	return TCwave(waveform, drs_stop, std::string(file_name));
+}
+
+std::map<double,double> TCwave (std::vector<double> waveform, int drs_stop, const std::string &calib_file){
+	std::vector<double> TC_value = load_tc_values(calib_file);
 	std::map<double,double> time_calib_waveform;
-	while (fscanf(fp,"%lf",&val)==1){
-		TC_value.push_back(val);
-	}
+	if (TC_value.empty()) return time_calib_waveform;
 	double time_sum=0.0;
 	for (int i=0;i<(int)waveform.size();i++){
 		int bin;
@@ -227,7 +242,6 @@ std::map<double,double> TCwave (std::vector<double> waveform,int MID, int channe
 		time_sum += TC_value.at(bin) / 1000.;
 
 	}
-	fclose(fp);	
 	return time_calib_waveform;
 
 
@@ -376,4 +390,3 @@ int getTimeBin (std::vector<double> pedcorwave, double fraction){
 //	  double V = par[0]/(1+exp((par[2]-xx)/par[1]));
 //	  return V;
 //}
-

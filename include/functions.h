@@ -1,6 +1,7 @@
 #include <vector>
 #include <numeric>
 #include <map>
+#include <string>
 
 double getStd (std::vector<double> &data);
 std::vector<int> FindZeroCrossPosSlope (std::vector<double> waveform);
@@ -14,6 +15,8 @@ std::vector<double> wave_ADC_calib (std::vector<short> waveform, int drs_stop, s
 std::vector<double> pedcorwave (std::vector<short> waveform, int range);
 std::map<double,double> TCwave (std::vector<double> waveform, int MID, int channel, int drs_stop);
 std::map<double,double> TCwave_saw (std::vector<double> waveform, int MID, int channel, int drs_stop);
+std::map<double,double> TCwave (std::vector<double> waveform, int drs_stop, const std::string &calib_file);
+std::map<double,double> TCwave_saw (std::vector<double> waveform, int drs_stop, const std::string &calib_file);
 
 std::vector<double> fastemul (std::vector<short> waveform, int RE, int width, double fraction);
 

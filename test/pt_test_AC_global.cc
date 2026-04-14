@@ -29,8 +29,11 @@ int main(int argc, char* argv[]){
 
 
 	FILE* fp;
-	char file_name[200];
+	char file_name[400];
 	sprintf(file_name,"/u/user/eoyun/DAQ/25.03.27/DAQ_read/time_calib/global_AC_MID_%d_ch_%d.txt",mid,ch);
+	if (argc > 4){
+		sprintf(file_name,"%s",argv[4]);
+	}
 	fp = fopen(file_name,"rt");
 	double val;
 	std::vector<double> TC_value;
@@ -39,12 +42,19 @@ int main(int argc, char* argv[]){
 	}
 
 	fclose(fp);
-	TFile* f_root = new TFile(Form("./roots/AC_global_pt_test_%d.root",runnum),"recreate");
+	char out_file_name[400];
+	sprintf(out_file_name,"./roots/AC_global_pt_test_%d.root",runnum);
+	if (argc > 5){
+		sprintf(out_file_name,"%s",argv[5]);
+	}
+	TFile* f_root = new TFile(out_file_name,"recreate");
 	TH1D* h = new TH1D("h","",1024,0,1024);
 	TH2D* h_2d = new TH2D("h2d","",1024,0,1024,2000,9,11);
 	h->Sumw2();
 	TH1D* h_nor = new TH1D("h_nor","",1024,0,1024);
 	h_nor->Sumw2();
+	TH1D* h_period = new TH1D("h_period","",2000,9,11);
+	h_period->Sumw2();
 
 	ADC_value = ADC_calib(mid,ch);
 	//for (int i = 0;i<10;i++){
@@ -77,9 +87,11 @@ int main(int argc, char* argv[]){
 			}
 			double time_cor =0.0;
 			time_cor =  - abs(pedcor_wave.at(zerocross.at(j))/(pedcor_wave.at(zerocross.at(j)) - pedcor_wave.at(zerocross.at(j)+1) ))*TC_value.at(start_bin) + abs(pedcor_wave.at(zerocross.at(j+2) )/(pedcor_wave.at(zerocross.at(j + 2)) - pedcor_wave.at(zerocross.at(j+2)+1)))*TC_value.at(finish_bin);
-			h->Fill(start_bin,(delta_t_kq + time_cor)/1000.);
-			h_2d->Fill(start_bin,(delta_t_kq + time_cor)/1000.);
+			double period_ns = (delta_t_kq + time_cor)/1000.;
+			h->Fill(start_bin,period_ns);
+			h_2d->Fill(start_bin,period_ns);
 			h_nor->Fill(start_bin);
+			h_period->Fill(period_ns);
 			
 			//std::cout<<delta_t_kq/1000. <<" | "<< time_cor/1000.<<std::endl;
 
@@ -91,5 +103,7 @@ int main(int argc, char* argv[]){
 	h->Write();
 	h_nor->Write();
 	h_2d->Write();
+	h_period->Write();
+	std::cout << "PT_PERIOD_SIGMA_NS " << h_period->GetStdDev() << std::endl;
 	f_root->Close();
 }
