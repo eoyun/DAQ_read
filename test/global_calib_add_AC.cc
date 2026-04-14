@@ -16,15 +16,17 @@ int main(int argc, char* argv[]){
 	int runnum = atoi(argv[1]);
 	int mid = atoi(argv[2]);
 	int ch = atoi(argv[3]);
-	int loops = atoi(argv[4]);
+	//int loops = atoi(argv[4]);
 
 	int drs_num = (ch - 1) / 8;
 	readData *waveData = new readData(runnum,mid);
 	waveData->load();
 
 	int nevt = waveData->getNevt();
+	
 
 	std::vector<short> waveform;
+	std::vector<double> ADC_value = ADC_calib(mid,ch);
 	std::vector<int> drs_stop;
 	std::vector<double> pedcor_wave;
 	std::vector<double> time_calib_old;
@@ -35,7 +37,7 @@ int main(int argc, char* argv[]){
 
 	FILE* fp;
 	char file_name[200];
-	sprintf(file_name,"/u/user/eoyun/DAQ/25.03.27/DAQ_read/time_calib/MID_%d_ch_%d.txt",mid,ch);
+	sprintf(file_name,"/u/user/eoyun/DAQ/25.03.27/DAQ_read/time_calib/AC_MID_%d_ch_%d.txt",mid,ch);
 	fp = fopen(file_name,"rt");
 	double val;
 	std::vector<double> TC_value;
@@ -43,20 +45,18 @@ int main(int argc, char* argv[]){
 		TC_value.push_back(val);
 	}
 	time_calib_old = TC_value;
-	time_calib_new = TC_value;
 
 	fclose(fp);
-	double beta = 0.01;
-	double tmp_iter;
+	double beta = 1.;
 	//for (int i = 0;i<10000;i++){
-	//for (int i = 0;i<nevt;i++){
-	for (int i = 0;i<loops;i++){
+	for (int i = 0;i<nevt;i++){
+	//for (int i = 0;i<loops;i++){
 		waveData->getEvt();
 		waveform = waveData->readEvt(ch);
 		drs_stop = waveData->getDrsStop();
 		int drs_stop_val = drs_stop.at(drs_num);
-		pedcor_wave = pedcorwave(waveform,1000);
-		//time_calib_new = time_calib_old;
+		pedcor_wave = pedcorwave_ADC_calib(waveform,1000,drs_stop_val,ADC_value);
+		time_calib_new = time_calib_old;
 		std::vector<int> zerocross = FindZeroCross(pedcor_wave);
 		//if(i == 1718)for (auto k : zerocross) std::cout<<k<<std::endl;
 		for (int j = 0; j<(int)zerocross.size() - 2; j=j+2  ){
@@ -130,27 +130,14 @@ int main(int argc, char* argv[]){
 			//}
 			// adding
 			if (time_cor_start_bin >10000) continue;
-			if (i > 100) beta = 0.01;
+			if (i > 100) beta = 0.005;
 			double correction = (10000. - (delta_t_kq + time_cor))/bin_diff;
 			double correction_start_bin = (10000 - (delta_t_kq + time_cor))/bin_diff;
-			
-			time_calib_old.at(start_bin) = correction_start_bin + time_calib_old.at(start_bin);
-			time_calib_new.at(start_bin) = time_calib_old.at(start_bin) * beta + time_calib_new.at(start_bin) * (1 - beta);
-			if (start_bin < finish_bin) {
-				for (int k = start_bin + 1;k<finish_bin;k++) {
-					time_calib_old.at(k) = correction + time_calib_old.at(k);
-					time_calib_new.at(k) = time_calib_old.at(k) * beta + time_calib_new.at(k) * (1 - beta);
-				}
-			}
+			time_calib_new.at(start_bin) = correction_start_bin * beta + time_calib_new.at(start_bin);
+			if (start_bin < finish_bin) for (int k = start_bin + 1;k<finish_bin;k++) time_calib_new.at(k) = correction * beta+ time_calib_new.at(k);
 			else {
-				for (int k = 0;k<finish_bin;k++){
-					time_calib_old.at(k) = correction + time_calib_old.at(k);
-					time_calib_new.at(k) = time_calib_old.at(k) * beta + time_calib_new.at(k) * (1 - beta);
-				}
-				for (int k = start_bin + 1;k<(int)time_calib_old.size();k++) {
-					time_calib_old.at(k) = correction + time_calib_old.at(k);
-					time_calib_new.at(k) = time_calib_old.at(k) * beta + time_calib_new.at(k) * (1 - beta);
-				}
+				for (int k = 0;k<finish_bin;k++) time_calib_new.at(k) = correction * beta+ time_calib_new.at(k);
+				for (int k = start_bin + 1;k<(int)time_calib_old.size();k++) time_calib_new.at(k) = correction * beta+ time_calib_new.at(k);
 			}
 			if (abs(correction) > 2){
 				std::cout<<correction<<" | "<<delta_t_kq<<" | "<<time_cor_start_bin<<" | ################## "<<start_bin<<" | "<<finish_bin<<" | "<<i<<std::endl;
@@ -178,13 +165,13 @@ int main(int argc, char* argv[]){
 		//g->GetXaxis()->SetRangeUser(100,150);
 		//g->GetYaxis()->SetRangeUser(-2000,2000);
 		//c->SaveAs(Form("./pngs/251013_v3_%d_time_calib_%d.root",runnum,i));
-		//time_calib_old = time_calib_new;
+		time_calib_old = time_calib_new;
 		//std::cout<<"event end!!"<<std::endl;
 		
 
 	}
-	sprintf(file_name,"/u/user/eoyun/DAQ/25.03.27/DAQ_read/time_calib/global_MID_%d_ch_%d_loop_%d.txt",mid,ch,loops);
-	//sprintf(file_name,"/u/user/eoyun/DAQ/25.03.27/DAQ_read/time_calib/global_MID_%d_ch_%d.txt",mid,ch);
+	//sprintf(file_name,"/u/user/eoyun/DAQ/25.03.27/DAQ_read/time_calib/global_MID_%d_ch_%d_loop_%d.txt",mid,ch,loops);
+	sprintf(file_name,"/u/user/eoyun/DAQ/25.03.27/DAQ_read/time_calib/global_AC_MID_%d_ch_%d.txt",mid,ch);
 	fp = fopen(file_name,"wt");
 
 	for (int i=0;i<(int)time_calib_new.size();i++){

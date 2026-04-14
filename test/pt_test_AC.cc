@@ -15,8 +15,6 @@ int main(int argc, char* argv[]){
 	int runnum = atoi(argv[1]);
 	int mid = atoi(argv[2]);
 	int ch = atoi(argv[3]);
-	int loops = atoi(argv[4]);
-	
 
 	int drs_num = (ch - 1) / 8;
 	readData *waveData = new readData(runnum,mid);
@@ -27,12 +25,12 @@ int main(int argc, char* argv[]){
 	std::vector<short> waveform;
 	std::vector<int> drs_stop;
 	std::vector<double> pedcor_wave;
+	std::vector<double> ADC_value;
 
 
 	FILE* fp;
 	char file_name[200];
-	//sprintf(file_name,"/u/user/eoyun/DAQ/25.03.27/DAQ_read/time_calib/global_MID_%d_ch_%d.txt",mid,ch);
-	sprintf(file_name,"/u/user/eoyun/DAQ/25.03.27/DAQ_read/time_calib/global_MID_%d_ch_%d_loop_%d.txt",mid,ch,loops);
+	sprintf(file_name,"/u/user/eoyun/DAQ/25.03.27/DAQ_read/time_calib/AC_MID_%d_ch_%d.txt",mid,ch);
 	fp = fopen(file_name,"rt");
 	double val;
 	std::vector<double> TC_value;
@@ -41,25 +39,27 @@ int main(int argc, char* argv[]){
 	}
 
 	fclose(fp);
-	TFile* f_root = new TFile(Form("./roots/260127_ema/pt_test_global_%d_loop_%d.root",runnum,loops),"recreate");
-	//TFile* f_root = new TFile(Form("./roots/251026/pt_test_global_%d.root",runnum,loops),"recreate");
+	TFile* f_root = new TFile(Form("./roots/AC_pt_test_%d.root",runnum),"recreate");
 	TH1D* h = new TH1D("h","",1024,0,1024);
+	TH2D* h_2d = new TH2D("h2d","",1024,0,1024,2000,9,11);
 	h->Sumw2();
 	TH1D* h_nor = new TH1D("h_nor","",1024,0,1024);
 	h_nor->Sumw2();
 
+	ADC_value = ADC_calib(mid,ch);
 	//for (int i = 0;i<10;i++){
 	for (int i = 0;i<nevt;i++){
 		waveData->getEvt();
 		waveform = waveData->readEvt(ch);
 		drs_stop = waveData->getDrsStop();
 		int drs_stop_val = drs_stop.at(drs_num);
-		pedcor_wave = pedcorwave(waveform,1000);
+		pedcor_wave = pedcorwave_ADC_calib(waveform,950,drs_stop.at(drs_num),ADC_value);
 
 
 		std::vector<int> zerocross = FindZeroCross(pedcor_wave);
 		for (int j = 0; j<(int)zerocross.size() - 2; j = j + 2  ){
-			if (zerocross.at(j) < 1 ||zerocross.at(j) > 1001 || zerocross.at(j + 2) > 1001 ) continue;
+			if (pedcor_wave.at(zerocross.at(0))>0 && j==0) j = 1;
+			if (zerocross.at(j) < 1 ||zerocross.at(j) > 951 || zerocross.at(j + 2) > 951 ) continue;
 			
 			int start_bin, finish_bin;
 			if (drs_stop_val + zerocross.at(j)   < 1024) start_bin = zerocross.at(j) + drs_stop_val ; 
@@ -78,7 +78,11 @@ int main(int argc, char* argv[]){
 			double time_cor =0.0;
 			time_cor =  - abs(pedcor_wave.at(zerocross.at(j))/(pedcor_wave.at(zerocross.at(j)) - pedcor_wave.at(zerocross.at(j)+1) ))*TC_value.at(start_bin) + abs(pedcor_wave.at(zerocross.at(j+2) )/(pedcor_wave.at(zerocross.at(j + 2)) - pedcor_wave.at(zerocross.at(j+2)+1)))*TC_value.at(finish_bin);
 			h->Fill(start_bin,(delta_t_kq + time_cor)/1000.);
+			h_2d->Fill(start_bin,(delta_t_kq + time_cor)/1000.);
 			h_nor->Fill(start_bin);
+			if (start_bin != 238) continue;
+			if ((delta_t_kq + time_cor)/1000. > 9.97) std::cout<<" upper peak : "<<drs_stop.at(drs_num)<<" | grad j-1th and jth "<<pedcor_wave.at(zerocross.at(j)-1)<<" "<<pedcor_wave.at(zerocross.at(j))<<std::endl;
+			else std::cout<<" lower peak : "<<drs_stop.at(drs_num)<<" | grad j-1th and jth "<<pedcor_wave.at(zerocross.at(j)-1)<<" "<<pedcor_wave.at(zerocross.at(j))<<std::endl;
 			
 			//std::cout<<delta_t_kq/1000. <<" | "<< time_cor/1000.<<std::endl;
 
@@ -88,5 +92,7 @@ int main(int argc, char* argv[]){
 	}
 	h->Divide(h_nor);
 	h->Write();
+	h_nor->Write();
+	h_2d->Write();
 	f_root->Close();
 }

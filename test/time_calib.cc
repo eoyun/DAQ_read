@@ -31,8 +31,10 @@ int main(int argc, char* argv[]){
 	std::vector<double> pedcor_wave2;
 	std::map<double, double> TC_wave1;
 	std::map<double, double> TC_wave2;
+	std::vector<double> ADC_value1;
+	std::vector<double> ADC_value2;
 
-	TFile* f = new TFile(Form("./roots/time_calib_runnum_%d_mid_%d.root",runnum,mid),"recreate");
+	TFile* f = new TFile(Form("./roots/260414/time_calib_runnum_%d_mid_%d.root",runnum,mid),"recreate");
 	TTree *t = new TTree("tree","");
 
 	double time_diff;
@@ -42,6 +44,8 @@ int main(int argc, char* argv[]){
 	t->Branch("time_diff_woTC",&time_diff_woTC);
 	t->Branch("drs_stop_val1",&drs_stop_val1);
 	t->Branch("drs_stop_val2",&drs_stop_val2);
+	ADC_value1 = ADC_calib(mid,ch1);
+	ADC_value2 = ADC_calib(mid,ch2);
 	for (int i = 0;i<nevt;i++){
 	//for (int i = 0;i<10;i++){
 		waveData->getEvt();
@@ -49,11 +53,11 @@ int main(int argc, char* argv[]){
 		waveform2 = waveData->readEvt(ch2);
 		drs_stop = waveData->getDrsStop();
 		
-		pedcor_wave1 = pedcorwave(waveform1,100);
-		pedcor_wave2 = pedcorwave(waveform2,100);
+		pedcor_wave1 = pedcorwave_ADC_calib(waveform1,100,drs_stop.at(drs_num1),ADC_value1);
+		pedcor_wave2 = pedcorwave_ADC_calib(waveform2,100,drs_stop.at(drs_num2),ADC_value2);
 
-		TC_wave1 = TCwave(pedcor_wave1,mid,ch1,drs_stop.at(drs_num1));
-		TC_wave2 = TCwave(pedcor_wave2,mid,ch2,drs_stop.at(drs_num2));
+		TC_wave1 = TCwave_saw(pedcor_wave1,mid,ch1,drs_stop.at(drs_num1));
+		TC_wave2 = TCwave_saw(pedcor_wave2,mid,ch2,drs_stop.at(drs_num2));
 		double time_woTC1 = getTime(pedcor_wave1,0.4);
 		double time_woTC2 = getTime(pedcor_wave2,0.4);
 		double time1 = getTimewTC(TC_wave1,0.4);	
@@ -64,7 +68,7 @@ int main(int argc, char* argv[]){
 		time_diff_woTC = time_woTC1 - time_woTC2;
 		t->Fill();
 		//std::cout<<nevt<<" | "<<i<<" | "<<time1-time2<<" | "<<time1<<" | "<<time2<<std::endl;	
-		std::cout<<nevt<<" | "<<drs_stop_val1<<" | "<<drs_stop_val2<<std::endl;
+		//std::cout<<nevt<<" | "<<drs_stop_val1<<" | "<<drs_stop_val2<<std::endl;
 
 		//for (auto iter : TC_wave1){
 		//

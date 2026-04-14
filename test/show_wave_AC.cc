@@ -16,6 +16,7 @@ int main(int argc, char* argv[]){
 	int runnum = atoi(argv[1]);
 	int mid = atoi(argv[2]);
 	int ch = atoi(argv[3]);
+	int drs_num = (int) (ch-1)/8;
 
 	readData *waveData = new readData(runnum,mid);
 	waveData->load();
@@ -24,6 +25,9 @@ int main(int argc, char* argv[]){
 
 	std::vector<short> waveform;
 	std::vector<double> pedcor_wave;
+	std::vector<double> ACwaveform;
+	std::vector<double> ADC_value;
+	std::vector<int> drs_stop;
 
 
 
@@ -32,29 +36,31 @@ int main(int argc, char* argv[]){
 	h->Sumw2();
 	int cont=std::numeric_limits<int>::max();
 	TCanvas *c = new TCanvas();
+	ADC_value = ADC_calib(mid,ch);
 	for (int i = 0;i<100;i++){
 	//for (int i = 0;i<nevt;i++){
 		waveData->getEvt();
 		waveform = waveData->readEvt(ch);
-		pedcor_wave = pedcorwave(waveform,1000);
-		std::vector<int> zerocross = FindZeroCross(pedcor_wave);
+		drs_stop = waveData->getDrsStop();
+		pedcor_wave = wave_ADC_calib(waveform,drs_stop.at(drs_num),ADC_value);
+		//std::vector<int> zerocross = FindZeroCross(pedcor_wave);
 		h->Reset();
 		h2->Set(0);
 		for (int j = 1;j<1001;j++){
 			h->Fill(j-1,pedcor_wave.at(j));
 		}
-		for (auto i : zerocross){
-			h2->AddPoint(i,0);
-		}
+		//for (auto i : zerocross){
+		//	h2->AddPoint(i,0);
+		//}
 		h->Draw("hist");
 		h2->Draw("p");
 		h2->SetMarkerColor(kRed);
-		h->GetYaxis()->SetRangeUser(-2000,2000);
-		h->GetXaxis()->SetRangeUser(100,200);
+		h->GetYaxis()->SetRangeUser(3000,4000);
+		//h->GetXaxis()->SetRangeUser(100,200);
 		h->SetLineWidth(2);
 		c->Modified();
                 c->Update();
-		c->SaveAs(Form("./pngs/run_%d_%d_zoom.eps",runnum,i));
+		c->SaveAs(Form("./pngs_AC/AC_run_%d_%d.eps",runnum,i));
 
 
 	}

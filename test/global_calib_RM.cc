@@ -39,24 +39,34 @@ int main(int argc, char* argv[]){
 	fp = fopen(file_name,"rt");
 	double val;
 	std::vector<double> TC_value;
+	//TGraph* g = new TGraph();	
+	//TGraph* g_zero = new TGraph();	
 	while (fscanf(fp,"%lf",&val)==1){
 		TC_value.push_back(val);
 	}
 	time_calib_old = TC_value;
-	time_calib_new = TC_value;
 
 	fclose(fp);
-	double beta = 0.01;
-	double tmp_iter;
 	//for (int i = 0;i<10000;i++){
 	//for (int i = 0;i<nevt;i++){
+	//TCanvas *c = new TCanvas();
+	double beta = 1.;
 	for (int i = 0;i<loops;i++){
 		waveData->getEvt();
 		waveform = waveData->readEvt(ch);
 		drs_stop = waveData->getDrsStop();
 		int drs_stop_val = drs_stop.at(drs_num);
 		pedcor_wave = pedcorwave(waveform,1000);
-		//time_calib_new = time_calib_old;
+		//g->Set(0);
+		//g_zero->Set(0);
+		time_calib_new = time_calib_old;
+		//for (int k=1;k<1001;k++){
+		//	double sum = 0.0;
+		//	if (k + drs_stop_val < 1024) sum = std::accumulate(time_calib_old.begin() + drs_stop_val,time_calib_old.begin() + drs_stop_val + k,0.0);
+		//	else sum = std::accumulate(time_calib_old.begin() + drs_stop_val, time_calib_old.end(),0.0) + std::accumulate(time_calib_old.begin(),time_calib_old.begin() + k + drs_stop_val -1024,0.0);
+		//	g->AddPoint(sum/1000.,pedcor_wave.at(k));
+		//	//std::cout<<sum/1000.<<" : "<<k<<" : time bin"<<std::endl;
+		//}
 		std::vector<int> zerocross = FindZeroCross(pedcor_wave);
 		//if(i == 1718)for (auto k : zerocross) std::cout<<k<<std::endl;
 		for (int j = 0; j<(int)zerocross.size() - 2; j=j+2  ){
@@ -117,45 +127,39 @@ int main(int argc, char* argv[]){
 				time_sum_start_bin = time_sum_start_bin + abs((pedcor_wave.at(zerocross.at(j+2)) - pedcor_wave.at(zerocross.at(j)))/(pedcor_wave.at(zerocross.at(j + 2)) - pedcor_wave.at(zerocross.at(j+2)+1) ))*time_calib_old.at(finish_bin);
 				time_cor_start_bin = abs((pedcor_wave.at(zerocross.at(j+2)) - pedcor_wave.at(zerocross.at(j)))/(pedcor_wave.at(zerocross.at(j + 2)) - pedcor_wave.at(zerocross.at(j+2)+1) ))*time_calib_old.at(finish_bin);
 			}
+			//g_zero->AddPoint(time_sum_start_bin/1000.,pedcor_wave.at(zerocross.at(j)));
 			// multiplying
 			//double correction = 10000./(delta_t_kq + time_cor);
-			//double correction = 10000./(delta_t_kq + time_cor);
-			//double correction_start_bin = 10000./(delta_t_kq + time_cor_start_bin);
-			////std::cout<<zerocross.at(j)<<" || "<<correction<<" || "<<delta_t_kq<<" || "<<time_cor<<" || "<<std::accumulate(time_calib_old.begin(),time_calib_old.begin() + finish_bin,0.0 )<<" || "<<std::accumulate(time_calib_old.end() - start_bin,time_calib_old.end(),0.0)<<std::endl;
-			//time_calib_new.at(start_bin) = correction_start_bin * time_calib_new.at(start_bin);
-			//if (start_bin < finish_bin) for (int k = start_bin+1 ;k<finish_bin ;k++) time_calib_new.at(k) = correction * time_calib_new.at(k);
-			//else {
-			//	for (int k = 0;k<finish_bin ;k++) time_calib_new.at(k) = correction * time_calib_new.at(k);
-			//	for (int k = start_bin+1 ;k<(int)time_calib_old.size();k++) time_calib_new.at(k) = correction * time_calib_new.at(k);
-			//}
-			// adding
+			double correction = 10000./(delta_t_kq + time_cor);
 			if (time_cor_start_bin >10000) continue;
-			if (i > 100) beta = 0.01;
-			double correction = (10000. - (delta_t_kq + time_cor))/bin_diff;
-			double correction_start_bin = (10000 - (delta_t_kq + time_cor))/bin_diff;
-			
-			time_calib_old.at(start_bin) = correction_start_bin + time_calib_old.at(start_bin);
-			time_calib_new.at(start_bin) = time_calib_old.at(start_bin) * beta + time_calib_new.at(start_bin) * (1 - beta);
-			if (start_bin < finish_bin) {
-				for (int k = start_bin + 1;k<finish_bin;k++) {
-					time_calib_old.at(k) = correction + time_calib_old.at(k);
-					time_calib_new.at(k) = time_calib_old.at(k) * beta + time_calib_new.at(k) * (1 - beta);
-				}
-			}
-			else {
-				for (int k = 0;k<finish_bin;k++){
-					time_calib_old.at(k) = correction + time_calib_old.at(k);
-					time_calib_new.at(k) = time_calib_old.at(k) * beta + time_calib_new.at(k) * (1 - beta);
-				}
-				for (int k = start_bin + 1;k<(int)time_calib_old.size();k++) {
-					time_calib_old.at(k) = correction + time_calib_old.at(k);
-					time_calib_new.at(k) = time_calib_old.at(k) * beta + time_calib_new.at(k) * (1 - beta);
-				}
-			}
-			if (abs(correction) > 2){
+			if(correction > 1.01 || correction < 0.99 ||correction == 1){
 				std::cout<<correction<<" | "<<delta_t_kq<<" | "<<time_cor_start_bin<<" | ################## "<<start_bin<<" | "<<finish_bin<<" | "<<i<<std::endl;
 				std::cout<<pedcor_wave.at(zerocross.at(j+2)-1)<<" | "<<pedcor_wave.at(zerocross.at(j+2))<<" | "<<pedcor_wave.at(zerocross.at(j+2)+1)<<std::endl;
+				//g->Draw("apl");
+				//g_zero->Draw("p");
+				//g_zero->SetMarkerColor(kRed);
+				//c->Modified();
+				//c->Update();
+				//g->GetXaxis()->SetRangeUser(100,150);
+				//g->GetYaxis()->SetRangeUser(-2000,2000);
+		//		c->SaveAs(Form("./pngs/251013_v1_%d_time_calib_%d.root",runnum,i));
 			}
+			double correction_start_bin = 10000./(delta_t_kq + time_cor_start_bin);
+			//std::cout<<zerocross.at(j)<<" || "<<correction<<" || "<<delta_t_kq<<" || "<<time_cor<<" || "<<std::accumulate(time_calib_old.begin(),time_calib_old.begin() + finish_bin,0.0 )<<" || "<<std::accumulate(time_calib_old.end() - start_bin,time_calib_old.end(),0.0)<<std::endl;
+			//if (i > 1000) beta = 0.001;
+			time_calib_new.at(start_bin) += (correction_start_bin * time_calib_new.at(start_bin) - time_calib_new.at(start_bin))/(i+1);
+			if (start_bin < finish_bin) for (int k = start_bin+1 ;k<finish_bin ;k++) time_calib_new.at(k) += (correction * time_calib_new.at(k) - time_calib_new.at(k))/(i+1);
+			else {
+				for (int k = 0;k<finish_bin ;k++) time_calib_new.at(k) += (correction * time_calib_new.at(k) - time_calib_new.at(k))/(i+1);
+				for (int k = start_bin+1 ;k<(int)time_calib_old.size();k++)time_calib_new.at(k) += (correction * time_calib_new.at(k) - time_calib_new.at(k))/(i+1);
+			}
+			// adding
+			//double correction = (5000. - (delta_t_kq + time_cor))/bin_diff;
+			//if (start_bin < finish_bin) for (int k = start_bin + 1;k<finish_bin + 1;k++) time_calib_new.at(k) = correction + time_calib_new.at(k);
+			//else {
+			//	for (int k = 0;k<finish_bin + 1;k++) time_calib_new.at(k) = correction + time_calib_new.at(k);
+			//	for (int k = start_bin + 1;k<(int)time_calib_old.size();k++) time_calib_new.at(k) = correction + time_calib_new.at(k);
+			//}
 			
 
 		}
@@ -178,7 +182,7 @@ int main(int argc, char* argv[]){
 		//g->GetXaxis()->SetRangeUser(100,150);
 		//g->GetYaxis()->SetRangeUser(-2000,2000);
 		//c->SaveAs(Form("./pngs/251013_v3_%d_time_calib_%d.root",runnum,i));
-		//time_calib_old = time_calib_new;
+		time_calib_old = time_calib_new;
 		//std::cout<<"event end!!"<<std::endl;
 		
 
