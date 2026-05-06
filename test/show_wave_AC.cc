@@ -31,20 +31,19 @@ int main(int argc, char* argv[]){
 
 
 
-	TH1D* h = new TH1D("h","",1000,0,1000);
+	TH2D* h = new TH2D("h","",1000,0,1000,4000,0,4000);
 	TGraph* h2 = new TGraph();
 	h->Sumw2();
 	int cont=std::numeric_limits<int>::max();
 	TCanvas *c = new TCanvas();
 	ADC_value = ADC_calib(mid,ch);
-	for (int i = 0;i<100;i++){
-	//for (int i = 0;i<nevt;i++){
+	//for (int i = 0;i<100;i++){
+	for (int i = 0;i<nevt;i++){
 		waveData->getEvt();
 		waveform = waveData->readEvt(ch);
 		drs_stop = waveData->getDrsStop();
 		pedcor_wave = wave_ADC_calib(waveform,drs_stop.at(drs_num),ADC_value);
 		//std::vector<int> zerocross = FindZeroCross(pedcor_wave);
-		h->Reset();
 		h2->Set(0);
 		for (int j = 1;j<1001;j++){
 			h->Fill(j-1,pedcor_wave.at(j));
@@ -52,16 +51,9 @@ int main(int argc, char* argv[]){
 		//for (auto i : zerocross){
 		//	h2->AddPoint(i,0);
 		//}
-		h->Draw("hist");
-		h2->Draw("p");
-		h2->SetMarkerColor(kRed);
-		h->GetYaxis()->SetRangeUser(3000,4000);
 		//h->GetXaxis()->SetRangeUser(100,200);
-		h->SetLineWidth(2);
-		c->Modified();
-                c->Update();
-		c->SaveAs(Form("./pngs_AC/AC_run_%d_%d.eps",runnum,i));
-
-
 	}
+	TFile *f = new TFile("./roots/wave_cor_2D.root","recreate");
+	h->Write();
+	f->Close();
 }

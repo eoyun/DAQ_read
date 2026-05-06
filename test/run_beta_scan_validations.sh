@@ -19,7 +19,7 @@ SUMMARY_CSV="$VALID_BASE/pt_sigma_summary.csv"
 echo "beta,mid,ch,runnum,sigma_ns,root_file" > "$SUMMARY_CSV"
 
 MID=9
-RUNS=(11538 11537 11543 11544)
+RUNS=(11538 11537 11544 11543)
 CHS=(4 6 12 14)
 
 mapfile -t BETAS < <(python3 - <<'PY'

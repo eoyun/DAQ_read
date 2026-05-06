@@ -4,7 +4,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-make ARG=global_calib_AC_lr
+#make ARG=global_calib_AC_lr
+make ARG=global_calib_add_AC
 
 OUT_BASE="${1:-./scan_outputs}"
 GLOBAL_BASE="$OUT_BASE/global_calib"
@@ -17,7 +18,7 @@ for v in vals:
 PY
 )
 
-RUNS=(11538 11537 11543 11544)
+RUNS=(11538 11537 11544 11543)
 CHS=(4 6 12 14)
 MID=9
 
@@ -30,7 +31,7 @@ for beta in "${BETAS[@]}"; do
         runnum="${RUNS[$idx]}"
         ch="${CHS[$idx]}"
         out_file="$beta_dir/global_AC_MID_${MID}_ch_${ch}.txt"
-        ./global_calib_AC_lr_program "$runnum" "$MID" "$ch" "$beta" "$out_file"
+        ./global_calib_add_AC_program "$runnum" "$MID" "$ch" "$beta" "$out_file"
     done
 
 done
