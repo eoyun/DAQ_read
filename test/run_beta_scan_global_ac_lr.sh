@@ -6,6 +6,7 @@ cd "$SCRIPT_DIR"
 
 #make ARG=global_calib_AC_lr
 make ARG=global_calib_add_AC
+make ARG=drs_AC
 
 OUT_BASE="${1:-./scan_outputs}"
 GLOBAL_BASE="$OUT_BASE/global_calib"
@@ -21,6 +22,11 @@ PY
 RUNS=(11538 11537 11544 11543)
 CHS=(4 6 12 14)
 MID=9
+
+./drs_AC_program 11532 9 4
+./drs_AC_program 11533 9 6
+./drs_AC_program 11540 9 12
+./drs_AC_program 11542 9 14
 
 for beta in "${BETAS[@]}"; do
     beta_tag="beta_${beta}"

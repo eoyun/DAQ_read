@@ -298,7 +298,7 @@ std::vector<double> pedcorwave_ADC_calib (std::vector<short> waveform, int range
 	std::vector<double> pedcor;
 	//std::cout<<ped<<std::endl;
 	for (int i = 0; i < (int)waveform.size(); i++ )
-		pedcor.push_back((double)(ped - waveform.at(i)));
+		pedcor.push_back((double)(ped - ADCcorwave.at(i)));
 	return pedcor;
 }
 

@@ -69,7 +69,7 @@ int main(int argc, char* argv[]){
 		std::vector<int> zerocross = FindZeroCross(pedcor_wave);
 		//if(i == 1718)for (auto k : zerocross) std::cout<<k<<std::endl;
 		for (int j = 0; j<(int)zerocross.size() - 2; j=j+2  ){
-			if (pedcor_wave.at(zerocross.at(0))>0 && j==0) j = 1;
+			//if (pedcor_wave.at(zerocross.at(0))>0 && j==0) j = 1;
 	
 			if (zerocross.at(j) < 1 ||zerocross.at(j) > 951 || zerocross.at(j + 2) > 951 ) continue;
 			double time_sum=0.0;
